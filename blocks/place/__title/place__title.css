@@ -1,0 +1,6 @@
+.place__title {
+  font: 900 24px/29px 'Inter',sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
