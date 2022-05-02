@@ -7,7 +7,7 @@
   cursor: pointer;
 }
 
-.place__button:active {
+.place__button_like {
   background-image: url(../../../images/places/black-heart.svg);
   background-repeat: no-repeat;
   background-position: 0 5px;
