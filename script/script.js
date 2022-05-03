@@ -10,10 +10,10 @@ const popupImg = document.querySelector('.popup__content')
 const popupText = document.querySelector('.popup__text')
 const mestoTemplate = document.querySelector('#mesto').content;
 const places = document.querySelector('.places');
-const profileButtonAddCard = document.querySelector('#profileNewPlace')
+const formAddCard = document.querySelector('#profileNewPlace')
 const placeTitle = document.querySelector('#place-title')
 const placeContent = document.querySelector('#place-content')
-const profileEditElem = document.querySelector('#editProfile')
+const formProfileEdit = document.querySelector('#editProfile')
 const nameInput = document.querySelector('#login-name')
 const jobInput = document.querySelector('#login-content')
 const profileTitle = document.querySelector('.profile__title')
@@ -30,7 +30,7 @@ function handleProfileFormSubmit (evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileContent.textContent = jobInput.value;
-  profileEdit.classList.remove('popup_opened');
+  closePopup(profileEdit);
 }
 
 // клонируем содержимое тега template
@@ -45,18 +45,12 @@ function createCard(name, link) {
   userElement.querySelector('.place__image').src = link;
   userElement.querySelector('.place__image').alt = name;
   userElement.querySelector('.place__title').textContent = name;
-  return userElement;
-}
-
-// Добавляем карточки
-function renderCard (name, link) {
-  places.prepend(createCard(name, link));
 
   // likee
-  const place = places.firstElementChild;
-  const likeButtons = place.querySelector('.place__button')
-  likeButtons.addEventListener('click', () => {
-  likeButtons.classList.toggle("place__button_like");
+  const place = userElement.querySelector('.place')
+  const likeButton = place.querySelector('.place__button')
+  likeButton.addEventListener('click', () => {
+  likeButton.classList.toggle("place__button_like");
   })
 
   //delete
@@ -73,6 +67,12 @@ function renderCard (name, link) {
   popupText.textContent = name;
   openPopup(popupView);
   })
+  return userElement;
+}
+
+// Добавляем карточки
+function renderCard (name, link) {
+  places.prepend(createCard(name, link));
 }
 
 // открываем и закрываем модальные окна редактирования профиля и добавления карточек.
@@ -86,7 +86,7 @@ closeEdit.addEventListener('click', () => {
 })
 profileButton.addEventListener('click', () => {
   openPopup(popupCreate)
-  document.querySelector("#profileNewPlace").reset();
+  formAddCard.reset();
 })
 closeCreate.addEventListener('click', () => {
   closePopup(popupCreate)
@@ -96,11 +96,11 @@ closeView.addEventListener('click', () => {
 })
 
 // Добавляем новые карточки
-profileButtonAddCard.addEventListener('submit', (event) => {
+formAddCard.addEventListener('submit', (event) => {
   event.preventDefault();
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
-  renderCard(placeName, placeCnt)
-  popupCreate.classList.remove('popup_opened')
+  renderCard(placeName, placeCnt);
+  closePopup(popupCreate);
 })
-profileEditElem.addEventListener('submit', handleProfileFormSubmit);
+formProfileEdit.addEventListener('submit', handleProfileFormSubmit);
