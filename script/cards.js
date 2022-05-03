@@ -24,7 +24,7 @@ function getName() {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-    })
+    }) 
     .then((response) => response.json())
     .then((responseData) => {
       // console.log(responseData);

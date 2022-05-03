@@ -91,7 +91,7 @@ openEdit.addEventListener('click', () => {
 })
 closeEdit.addEventListener('click', () => {
   closePopup(profileEdit)
-})
+}) 
 profileButton.addEventListener('click', () => {
   openPopup(popupCreate)
   document.querySelector("#profileNewPlace").reset();
