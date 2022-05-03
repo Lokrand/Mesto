@@ -1,131 +1,106 @@
-// открываем и закрываем модальные окна редактирования профиля и добавления карточек.
-
-const modal = document.querySelector('.profile__button-edit')
-const modal2 = document.querySelector('.popup')
+const openEdit = document.querySelector('.profile__button-edit')
+const profileEdit = document.querySelector('.popup')
 const closeEdit = document.querySelector('.popup__close')
 const popupCreate = document.querySelector('#popup__create')
 const profileButton = document.querySelector('.profile__button')
 const closeCreate = document.querySelector('#close_edit')
 const closeView = document.querySelector('#close_view')
 const popupView = document.querySelector('#popup_view')
+const popupImg = document.querySelector('.popup__content')
+const popupText = document.querySelector('.popup__text')
+const mestoTemplate = document.querySelector('#mesto').content;
+const places = document.querySelector('.places');
+const profileButtonAddCard = document.querySelector('#profileNewPlace')
+const placeTitle = document.querySelector('#place-title')
+const placeContent = document.querySelector('#place-content')
+const profileEditElem = document.querySelector('#editProfile')
+const nameInput = document.querySelector('#login-name')
+const jobInput = document.querySelector('#login-content')
+const profileTitle = document.querySelector('.profile__title')
+const profileContent = document.querySelector('.profile__subtitle')
 
-let popupImg = document.querySelector('.popup__content')
-let popupText = document.querySelector('.popup__text')
+// открываем попап
+const openPopup = (elem) => elem.classList.add('popup_opened');
 
-modal.addEventListener('click', () => {
-  modal2.classList.add('popup_opened')
-})
-closeEdit.addEventListener('click', () => {
-  modal2.classList.remove('popup_opened')
-})
-profileButton.addEventListener('click', () => {
-  popupCreate.classList.add('popup_opened')
-})
-closeCreate.addEventListener('click', () => {
-  popupCreate.classList.remove('popup_opened')
-})
-closeView.addEventListener('click', () => {
-  popupView.classList.remove('popup_opened')
-})
+// закрываем попап
+const closePopup = (elem) => elem.classList.remove('popup_opened');
 
-// Добавляем карточки из массива
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-  ];
-
-let mestoTemplate = document.querySelector('#mesto').content;
-let places = document.querySelector('.places');
-
-// Добавляем карточки
-function renderCard (name, link) {
-  let userElement = mestoTemplate.cloneNode(true);
-  userElement.querySelector('.place__image').src = link;
-  userElement.querySelector('.place__image').alt = name;
-  userElement.querySelector('.place__title').textContent = name;
-  places.prepend(userElement);
-
-  // likee
-  let place = places.firstElementChild;
-  let likeButtons = place.querySelector('.place__button')
-  likeButtons.addEventListener('click', () => {
-  likeButtons.classList.toggle("place__button_like");
-  })
-
-  //delete
-  let deleteBut = place.querySelector('.place__delete')
-  deleteBut.addEventListener('click', () => {
-    deleteBut.parentNode.remove();
-  })
-
-  // view
-  let placeImg = place.querySelector('.place__image')
-  placeImg.addEventListener('click', () => {
-  popupImg.src = link;
-  popupText.textContent = name;
-  popupView.classList.add('popup_opened')
-  })
+// заполняем имя профиля и профессию
+function handleProfileFormSubmit (evt) {
+  evt.preventDefault();
+  profileTitle.textContent = nameInput.value;
+  profileContent.textContent = jobInput.value;
+  profileEdit.classList.remove('popup_opened');
 }
+
 // клонируем содержимое тега template
 initialCards.reverse();
 for (let i = 0; i < initialCards.length; i++) {
   renderCard(initialCards[i].name, initialCards[i].link)
 }
 
+// добавляем карточки из массива
+function createCard(name, link) {
+  const userElement = mestoTemplate.cloneNode(true);
+  userElement.querySelector('.place__image').src = link;
+  userElement.querySelector('.place__image').alt = name;
+  userElement.querySelector('.place__title').textContent = name;
+  return userElement;
+}
+
+// Добавляем карточки
+function renderCard (name, link) {
+  places.prepend(createCard(name, link));
+
+  // likee
+  const place = places.firstElementChild;
+  const likeButtons = place.querySelector('.place__button')
+  likeButtons.addEventListener('click', () => {
+  likeButtons.classList.toggle("place__button_like");
+  })
+
+  //delete
+  const deleteBut = place.querySelector('.place__delete')
+  deleteBut.addEventListener('click', () => {
+    deleteBut.closest('.place').remove();
+  })
+
+  // view
+  const placeImg = place.querySelector('.place__image')
+  placeImg.addEventListener('click', () => {
+  popupImg.src = link;
+  popupImg.alt = name;
+  popupText.textContent = name;
+  openPopup(popupView);
+  })
+}
+
+// открываем и закрываем модальные окна редактирования профиля и добавления карточек.
+openEdit.addEventListener('click', () => {
+  nameInput.value = profileTitle.textContent
+  jobInput.value = profileContent.textContent
+  openPopup(profileEdit)
+})
+closeEdit.addEventListener('click', () => {
+  closePopup(profileEdit)
+})
+profileButton.addEventListener('click', () => {
+  openPopup(popupCreate)
+  document.querySelector("#profileNewPlace").reset();
+})
+closeCreate.addEventListener('click', () => {
+  closePopup(popupCreate)
+})
+closeView.addEventListener('click', () => {
+  closePopup(popupView)
+})
+
 // Добавляем новые карточки
-
-let newPlace = document.querySelector('#newPlace')
-let placeTitle = document.querySelector('#place-title')
-let placeContent = document.querySelector('#place-content')
-
-newPlace.addEventListener('click', (event) => {
+profileButtonAddCard.addEventListener('submit', (event) => {
   event.preventDefault();
-  let placeName = placeTitle.value;
-  let placeCnt = placeContent.value;
+  const placeName = placeTitle.value;
+  const placeCnt = placeContent.value;
   renderCard(placeName, placeCnt)
   popupCreate.classList.remove('popup_opened')
 })
-
-// заполняем имя профиля и профессию
-
-let formElement = document.querySelector('#editProfile')
-let nameInput = document.querySelector('#login-name')
-let jobInput = document.querySelector('#login-content')
-let profileTitle = document.querySelector('.profile__title')
-let profileContent = document.querySelector('.profile__subtitle')
-
-profileTitle.textContent = 'Жак-Ив Кусто'
-profileContent.textContent = 'Исследователь океана'
-nameInput.value = 'Жак-Ив Кусто'
-jobInput.value = 'Исследователь океана'
-
-function formSubmitHandler (evt) {
-  evt.preventDefault();
-  profileTitle.textContent = nameInput.value;
-  profileContent.textContent = jobInput.value;
-  modal2.classList.remove('popup_opened');
-}
-
-formElement.addEventListener('submit', formSubmitHandler);
+profileEditElem.addEventListener('submit', handleProfileFormSubmit);

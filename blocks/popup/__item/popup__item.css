@@ -14,3 +14,7 @@
 .popup__item::placeholder {
   color: #000;
 }
+
+input[type="text"]::-webkit-input-placeholder {
+  color: #C4C4C4;
+}

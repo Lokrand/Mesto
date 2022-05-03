@@ -17,12 +17,12 @@
         <img src="./images/profile/avatar.jpg" alt="Аватар пользователя" class="profile__avatar">
         <div>
           <div class="profile__block">
-            <h1 class="profile__title"></h1>
+            <h1 class="profile__title">Жак-Ив Кусто</h1>
             <button type="button" class="profile__button-edit">
               <img src="./images/profile/vector.svg" alt="Кнопка редактирования профиля" class="profile__image">
             </button>
           </div>
-          <p class="profile__subtitle"></p>
+          <p class="profile__subtitle">Исследователь океана</p>
         </div>
         <button type="button" class="profile__button">
           <img src="./images/profile/profile_plus.svg" alt="Кнопка добавления" class="profile__plus">
@@ -31,7 +31,7 @@
       <section class="places">
         <template id="mesto">
           <article class="place">
-            <img src="./images/places/Elbrus.png" id="place_image" alt="Гора Эльбрус" class="place__image">
+            <img src="" id="place_image" alt="" class="place__image">
             <button type="button" class="place__delete">
               <img src="./images/places/Group.svg" alt="удаление картинки" class="place__delete-img">
             </button>
@@ -64,9 +64,9 @@
   <div id="popup__create" class="popup">          <!-- popup_opened -> открыть попап -->
     <div class="popup__container">
       <h2 class="popup__title">Новое место</h2>
-      <form name="profile-edit" class="popup__body">
-        <input name="login-name" id="place-title" type="text" class="popup__item" placeholder="Название" required>
-        <input name="login-content" id="place-content" type="text" class="popup__item" placeholder="Ссылка на картинку" required>
+      <form name="profile-new-place" id="profileNewPlace" class="popup__body">
+        <input name="place-name" id="place-title" type="text" class="popup__item" placeholder="Название" required>
+        <input name="place-content" id="place-content" type="text" class="popup__item" placeholder="Ссылка на картинку" required>
         <button type="submit" id="newPlace" class="popup__button">Создать</button>
       </form>
       <button type="button" id="close_edit" class="popup__close"><img src="./images/popup/close-icon.svg" alt="Крестик" class="popup__close-cross"></button>
@@ -79,6 +79,7 @@
       <button type="button" id="close_view" class="popup__close"><img src="./images/popup/close-icon.svg" alt="Крестик" class="popup__close-cross"></button>
     </div>
   </div>
+  <script src="./script/cards.js"></script>
   <script src = "./script/script.js"></script>
 </body>
 </html>
