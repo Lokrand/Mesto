@@ -1,7 +1,8 @@
 
+let cardSet = new Set()
 
 function getWaifu() {
-  return fetch('https://api.waifu.pics/sfw/waifu',
+  return fetch(API_ENDPOINT,
     {
       method: "GET",
       headers: {
@@ -10,10 +11,7 @@ function getWaifu() {
       },
     })
     .then((response) => response.json())
-    .then((responseData) => {
-      // console.log(responseData);
-      return responseData.url;
-    })
+    .then((responseData) => responseData.url)
     .catch(error => console.warn(error));
 }
 function getName() {
@@ -26,27 +24,43 @@ function getName() {
       },
     }) 
     .then((response) => response.json())
-    .then((responseData) => {
-      // console.log(responseData);
-      return responseData;
-    })
+    .then((responseData) => responseData)
     .catch(error => console.warn(error));
 }
 
-function getInitialCards (number_of_cards) {
-  const pog = []
+function getNewCards(number_of_cards) {
+  const cardsList = []
   for (let i = number_of_cards; i--;) {
     getWaifu().then(response => {
       getName().then(response_ => {
-        console.log(response);
-        console.log(response_);
-        initialCards.push({
-          name: response_.body.name,
-          link: response,
-        })
+        console.info(
+          `[Card recieved] url: ${response}, 
+          name :${response_.body.name}`
+        );
+        if (isCardUnique(response)) {
+          initialCards.push({
+            name: response_.body.name,
+            link: response,
+          })
+        } else { 
+          // make another iteration
+          i++; 
+        }
+        renderCard(response_.body.name, response)
       })
     })
   }
-  return pog
+  return cardsList
 }
 
+function isCardUnique(card_url) {
+  // if card not in set
+  if (!cardSet.has(card_url)) {
+    // add card to set
+    cardSet.add(card_url)
+    return true
+  } else {
+    console.warn('Not unique card was dropped: ' + card_url)
+    return false
+  }
+}
