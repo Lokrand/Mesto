@@ -1,3 +1,5 @@
+const INITIAL_CARDS_AMOUNT = 3
+
 const openEdit = document.querySelector('.profile__button-edit')
 const profileEdit = document.querySelector('.popup')
 const closeEdit = document.querySelector('.popup__close')
@@ -33,11 +35,17 @@ function handleProfileFormSubmit (evt) {
   profileEdit.classList.remove('popup_opened');
 }
 
+
 // клонируем содержимое тега template
-initialCards.reverse();
-for (let i = 0; i < initialCards.length; i++) {
-  renderCard(initialCards[i].name, initialCards[i].link)
+const initialCards = getInitialCards(INITIAL_CARDS_AMOUNT)
+function pog() {
+  initialCards.reverse();
+  for (const i of initialCards) {
+    renderCard(i.name, i.link)
+  }
+  console.log('pog done');
 }
+
 
 // добавляем карточки из массива
 function createCard(name, link) {
@@ -83,7 +91,7 @@ openEdit.addEventListener('click', () => {
 })
 closeEdit.addEventListener('click', () => {
   closePopup(profileEdit)
-})
+}) 
 profileButton.addEventListener('click', () => {
   openPopup(popupCreate)
   document.querySelector("#profileNewPlace").reset();
@@ -104,3 +112,7 @@ profileButtonAddCard.addEventListener('submit', (event) => {
   popupCreate.classList.remove('popup_opened')
 })
 profileEditElem.addEventListener('submit', handleProfileFormSubmit);
+
+// refactor to wait exact time before list of links is fetched
+setTimeout(pog, 1500);
+
