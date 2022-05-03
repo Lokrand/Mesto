@@ -47,20 +47,19 @@ function createCard(name, link) {
   userElement.querySelector('.place__title').textContent = name;
 
   // likee
-  const place = userElement.querySelector('.place')
-  const likeButton = place.querySelector('.place__button')
+  const likeButton = userElement.querySelector('.place__button')
   likeButton.addEventListener('click', () => {
   likeButton.classList.toggle("place__button_like");
   })
 
   //delete
-  const deleteBut = place.querySelector('.place__delete')
+  const deleteBut = userElement.querySelector('.place__delete')
   deleteBut.addEventListener('click', () => {
     deleteBut.closest('.place').remove();
   })
 
   // view
-  const placeImg = place.querySelector('.place__image')
+  const placeImg = userElement.querySelector('.place__image')
   placeImg.addEventListener('click', () => {
   popupImg.src = link;
   popupImg.alt = name;
