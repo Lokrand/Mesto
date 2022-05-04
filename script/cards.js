@@ -30,7 +30,8 @@ function getName() {
 
 function getNewCards(number_of_cards) {
   const cardsList = []
-  for (let i = number_of_cards; i--;) {
+  while (number_of_cards) {
+    number_of_cards--;
     getWaifu().then(response => {
       getName().then(response_ => {
         console.info(
@@ -42,11 +43,12 @@ function getNewCards(number_of_cards) {
             name: response_.body.name,
             link: response,
           })
+          renderCard(response_.body.name, response)
+          // number_of_cards--;
         } else { 
           // make another iteration
-          i++; 
+          getNewCards(1)
         }
-        renderCard(response_.body.name, response)
       })
     })
   }
