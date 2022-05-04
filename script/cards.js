@@ -44,7 +44,6 @@ function getNewCards(number_of_cards) {
             link: response,
           })
           renderCard(response_.body.name, response)
-          // number_of_cards--;
         } else { 
           // make another iteration
           getNewCards(1)
