@@ -1,10 +1,12 @@
-const INITIAL_CARDS_AMOUNT = 3
+const INITIAL_CARDS_AMOUNT = 6
+const API_ENDPOINT = 'https://api.waifu.pics/sfw/waifu'
 
 const openEdit = document.querySelector('.profile__button-edit')
 const profileEdit = document.querySelector('.popup')
 const closeEdit = document.querySelector('.popup__close')
 const popupCreate = document.querySelector('#popup__create')
-const profileButton = document.querySelector('.profile__button')
+// const profileButton = document.querySelector('.profile__button')
+const profileButton = document.querySelector('#profile__button__popup')
 const closeCreate = document.querySelector('#close_edit')
 const closeView = document.querySelector('#close_view')
 const popupView = document.querySelector('#popup_view')
@@ -13,6 +15,7 @@ const popupText = document.querySelector('.popup__text')
 const mestoTemplate = document.querySelector('#mesto').content;
 const places = document.querySelector('.places');
 const profileButtonAddCard = document.querySelector('#profileNewPlace')
+const profileButtonAddRandomCard = document.querySelector('#rand_add')
 const placeTitle = document.querySelector('#place-title')
 const placeContent = document.querySelector('#place-content')
 const profileEditElem = document.querySelector('#editProfile')
@@ -37,14 +40,8 @@ function handleProfileFormSubmit (evt) {
 
 
 // клонируем содержимое тега template
-const initialCards = getInitialCards(INITIAL_CARDS_AMOUNT)
-function pog() {
-  initialCards.reverse();
-  for (const i of initialCards) {
-    renderCard(i.name, i.link)
-  }
-  console.log('pog done');
-}
+const initialCards = getNewCards(INITIAL_CARDS_AMOUNT)
+
 
 
 // добавляем карточки из массива
@@ -64,13 +61,17 @@ function renderCard (name, link) {
   const place = places.firstElementChild;
   const likeButtons = place.querySelector('.place__button')
   likeButtons.addEventListener('click', () => {
-  likeButtons.classList.toggle("place__button_like");
+    likeButtons.classList.toggle("place__button_like");
   })
 
   //delete
   const deleteBut = place.querySelector('.place__delete')
   deleteBut.addEventListener('click', () => {
-    deleteBut.closest('.place').remove();
+    const element = deleteBut.closest('.place')
+    element.remove();
+    const image_url = element.getElementsByTagName('img')[0].src
+    cardSet.delete(image_url)
+    console.info('Url deleted: ' + image_url);
   })
 
   // view
@@ -83,36 +84,4 @@ function renderCard (name, link) {
   })
 }
 
-// открываем и закрываем модальные окна редактирования профиля и добавления карточек.
-openEdit.addEventListener('click', () => {
-  nameInput.value = profileTitle.textContent
-  jobInput.value = profileContent.textContent
-  openPopup(profileEdit)
-})
-closeEdit.addEventListener('click', () => {
-  closePopup(profileEdit)
-}) 
-profileButton.addEventListener('click', () => {
-  openPopup(popupCreate)
-  document.querySelector("#profileNewPlace").reset();
-})
-closeCreate.addEventListener('click', () => {
-  closePopup(popupCreate)
-})
-closeView.addEventListener('click', () => {
-  closePopup(popupView)
-})
-
-// Добавляем новые карточки
-profileButtonAddCard.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const placeName = placeTitle.value;
-  const placeCnt = placeContent.value;
-  renderCard(placeName, placeCnt)
-  popupCreate.classList.remove('popup_opened')
-})
-profileEditElem.addEventListener('submit', handleProfileFormSubmit);
-
-// refactor to wait exact time before list of links is fetched
-setTimeout(pog, 1500);
 
